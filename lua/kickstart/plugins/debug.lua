@@ -22,6 +22,9 @@ return {
     'leoluz/nvim-dap-go',
   },
   config = function()
+    local dapvscode = require 'dap.ext.vscode'
+    dapvscode.load_launchjs('.vscode/launch.json', { codelldb = { 'c', 'cpp', 'rs' } })
+
     local dap = require 'dap'
     local dapui = require 'dapui'
 
@@ -38,7 +41,8 @@ return {
       -- online, please don't ask me how to install them :)
       ensure_installed = {
         -- Update this to ensure that you have the debuggers for the langs you want
-        'delve',
+        -- 'delve',
+        'codelldb',
       },
     }
 
@@ -82,6 +86,6 @@ return {
     dap.listeners.before.event_exited['dapui_config'] = dapui.close
 
     -- Install golang specific config
-    require('dap-go').setup()
+    -- require('dap-go').setup()
   end,
 }

@@ -15,12 +15,15 @@ vim.opt.number = true
 --  Experiment for yourself to see if you like it!
 vim.opt.relativenumber = true
 vim.opt.wrap = false
-vim.opt.expandtab = false
+vim.opt.expandtab = true
+-- vim.opt.tabstop = 4
+-- vim.opt.softtabstop = 4
+-- vim.opt.smartindent = true
 
 -- Folds using treesitter
-vim.opt.foldmethod = "expr"
-vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
--- vim.opt.foldlevelstart = 99
+vim.opt.foldmethod = 'expr'
+vim.opt.foldexpr = 'nvim_treesitter#foldexpr()'
+vim.opt.foldenable = false
 
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.opt.mouse = ''
@@ -73,7 +76,7 @@ vim.opt.scrolloff = 10
 --  See `:help vim.keymap.set()`
 
 -- Set highlight on search, but clear on pressing <Esc> in normal mode
-vim.opt.hlsearch = false
+vim.opt.hlsearch = true
 vim.opt.incsearch = true
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
@@ -101,18 +104,18 @@ vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
 --  Use CTRL+<hjkl> to switch between windows
 --
 --  See `:help wincmd` for a list of all window commands
-vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
-vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
-vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
-vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
+-- vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
+-- vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
+-- vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
+-- vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
 -- Personal Additions
 
-vim.keymap.set('n', "<Enter>", "o<ESC>", { desc = "Add a line below" })
-vim.keymap.set('n', "<C-Enter>", "O<ESC>", { desc = "Add a line above" })
-vim.keymap.set('n', "Y", "yg$", { desc = "Append with cursor fixed" })
-vim.keymap.set('v', "J", ":m '>+1<CR>gv=gv", { desc = "Move Marked content down once" })
-vim.keymap.set('v', "K", ":m '<-2<CR>gv=gv", { desc = "Move Marked content up once" })
+vim.keymap.set('n', '<Enter>', 'o<ESC>', { desc = 'Add a line below' })
+vim.keymap.set('n', '<C-Enter>', 'O<ESC>', { desc = 'Add a line above' })
+vim.keymap.set('n', 'Y', 'yg$', { desc = 'Append with cursor fixed' })
+vim.keymap.set('v', 'J', ":m '>+1<CR>gv=gv", { desc = 'Move Marked content down once' })
+vim.keymap.set('v', 'K', ":m '<-2<CR>gv=gv", { desc = 'Move Marked content up once' })
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
@@ -127,14 +130,6 @@ vim.api.nvim_create_autocmd('TextYankPost', {
     vim.highlight.on_yank()
   end,
 })
-
--- Open all folds by default
--- local open_fold_group = vim.api.nvim_create_augroup('open-folds', { clear = true })
--- vim.api.nvim_create_autocmd({ 'BufWinEnter' }, {
---   desc = 'Open all folds when reading a file',
---   group = open_fold_group,
---   command = 'normal zR',
--- })
 
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
@@ -170,7 +165,7 @@ require('lazy').setup {
   --    require('Comment').setup({})
 
   -- "gc" to comment visual regions/lines
-  { 'numToStr/Comment.nvim',    opts = {} },
+  { 'numToStr/Comment.nvim', opts = {} },
 
   -- Here is a more advanced example where we pass configuration
   -- options to `gitsigns.nvim`. This is equivalent to the following lua:
@@ -205,7 +200,7 @@ require('lazy').setup {
   -- after the plugin has been loaded:
   --  config = function() ... end
 
-  {                     -- Useful plugin to show you pending keybinds.
+  { -- Useful plugin to show you pending keybinds.
     'folke/which-key.nvim',
     event = 'VimEnter', -- Sets the loading event to 'VimEnter'
     config = function() -- This is the function that runs, AFTER loading
@@ -438,18 +433,18 @@ require('lazy').setup {
           --    See `:help CursorHold` for information about when this is executed
           --
           -- When you move your cursor, the highlights will be cleared (the second autocommand).
-          local client = vim.lsp.get_client_by_id(event.data.client_id)
-          if client and client.server_capabilities.documentHighlightProvider then
-            vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
-              buffer = event.buf,
-              callback = vim.lsp.buf.document_highlight,
-            })
-
-            vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
-              buffer = event.buf,
-              callback = vim.lsp.buf.clear_references,
-            })
-          end
+          -- local client = vim.lsp.get_client_by_id(event.data.client_id)
+          -- if client and client.server_capabilities.documentHighlightProvider then
+          --   vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
+          --     buffer = event.buf,
+          --     callback = vim.lsp.buf.document_highlight,
+          --   })
+          --
+          --   vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
+          --     buffer = event.buf,
+          --     callback = vim.lsp.buf.clear_references,
+          --   })
+          -- end
         end,
       })
 
@@ -554,10 +549,10 @@ require('lazy').setup {
     'stevearc/conform.nvim',
     opts = {
       notify_on_error = false,
-      -- format_on_save = {
-      --   timeout_ms = 500,
-      --   lsp_fallback = true,
-      -- },
+      format_on_save = {
+        timeout_ms = 500,
+        lsp_fallback = true,
+      },
       formatters_by_ft = {
         lua = { 'stylua' },
         -- Conform can also run multiple formatters sequentially
@@ -574,22 +569,21 @@ require('lazy').setup {
         sh = { 'shfmt' },
       },
     },
-    config = function()
-      vim.api.nvim_create_autocmd('BufWritePre', {
-        pattern = '*',
-        callback = function(args)
-          require('conform').format { bufnr = args.buf }
-          vim.lsp.buf.format { async = true }
-        end,
-      })
-    end,
+    -- config = function()
+    --   vim.api.nvim_create_autocmd('BufWritePre', {
+    --     callback = function(args)
+    --       require('conform').format { bufnr = args.buf }
+    --       -- vim.lsp.buf.format { async = true }
+    --     end,
+    --   })
+    -- end,
     keys = {
       {
-        "<leader>fm",
+        '<leader>fm',
         function()
           vim.lsp.buf.format()
         end,
-        desc = "format"
+        desc = 'format',
       },
     },
   },
@@ -686,18 +680,80 @@ require('lazy').setup {
     end,
   },
 
+  {
+    'folke/tokyonight.nvim',
+  },
+
+  {
+    'ramojus/mellifluous.nvim',
+  },
+
+  {
+    'rockerBOO/boo-colorscheme-nvim',
+  },
+
+  {
+    'xero/miasma.nvim',
+  },
+
+  {
+    'AhmedAbdulrahman/vim-aylin',
+  },
+
+  {
+    'olivercederborg/poimandres.nvim',
+  },
+
+  {
+    'lurst/austere.vim',
+  },
+
+  -- {
+  --   'ellisonleao/gruvbox.nvim',
+  --   config = function()
+  --     vim.o.background = "dark"
+  --   end
+  -- },
+
+  {
+    'catppuccin/nvim',
+    name = 'catppuccin',
+  },
+
+  {
+    'rebelot/kanagawa.nvim',
+  },
+
+  {
+    'jacoborus/tender.vim',
+  },
+
+  { 'savq/melange-nvim' },
+
+  {
+    'AlexvZyl/nordic.nvim',
+  },
+
   { -- You can easily change to a different colorscheme.
     -- Change the name of the colorscheme plugin below, and then
     -- change the command in the config to whatever the name of that colorscheme is
     --
     -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`
-    'savq/melange-nvim',
-    lazy = false,    -- make sure we load this during startup if it is your main colorscheme
+    'ellisonleao/gruvbox.nvim',
+    -- opts = {
+    --   transparent = true,
+    --   styles = {
+    --     sidebars = 'transparent',
+    --     floats = 'transparent',
+    --   },
+    -- },
+    lazy = false, -- make sure we load this during startup if it is your main colorscheme
     priority = 1000, -- make sure to load this before all the other start plugins
     config = function()
       -- Load the colorscheme here
       vim.opt.termguicolors = true
-      vim.cmd.colorscheme 'melange'
+      vim.cmd.colorscheme 'gruvbox'
+      vim.o.background = 'dark'
       -- You can configure highlights by doing something like
       -- vim.cmd.hi 'Comment gui=none'
     end,
@@ -761,6 +817,17 @@ require('lazy').setup {
       -- There are additional nvim-treesitter modules that you can use to interact
       -- with nvim-treesitter. You should go explore a few and see what interests you:
       --
+      require('nvim-treesitter.configs').setup {
+        incremental_selection = {
+          enable = true,
+          keymaps = {
+            init_selection = 'gnn', -- set to `false` to disable one of the mappings
+            node_incremental = 'grn',
+            scope_incremental = 'grc',
+            node_decremental = 'grm',
+          },
+        },
+      }
       --    - Incremental selection: Included, see `:help nvim-treesitter-incremental-selection-mod`
       --    - Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
       --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
@@ -776,7 +843,7 @@ require('lazy').setup {
   --  Here are some example plugins that I've included in the kickstart repository.
   --  Uncomment any of the lines below to enable them (you will need to restart nvim).
   --
-  -- require 'kickstart.plugins.debug',
+  require 'kickstart.plugins.debug',
   -- require 'kickstart.plugins.indent_line',
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
