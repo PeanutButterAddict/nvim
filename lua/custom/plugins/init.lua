@@ -3,6 +3,8 @@
 --
 -- See the kickstart.nvim README for more information
 return {
+{ "nvim-neotest/nvim-nio" },
+
   {
     'nvim-treesitter/playground',
     event = 'VeryLazy',
