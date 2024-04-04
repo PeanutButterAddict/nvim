@@ -567,6 +567,7 @@ require('lazy').setup {
         json = { 'prettier' },
         rust = { 'prettier' },
         sh = { 'shfmt' },
+        bat = { 'shfmt' },
       },
     },
     -- config = function()
@@ -579,7 +580,7 @@ require('lazy').setup {
     -- end,
     keys = {
       {
-        '<leader>fm',
+        '<leader>f',
         function()
           vim.lsp.buf.format()
         end,
@@ -812,12 +813,6 @@ require('lazy').setup {
         auto_install = true,
         highlight = { enable = true },
         indent = { enable = true },
-      }
-
-      -- There are additional nvim-treesitter modules that you can use to interact
-      -- with nvim-treesitter. You should go explore a few and see what interests you:
-      --
-      require('nvim-treesitter.configs').setup {
         incremental_selection = {
           enable = true,
           keymaps = {
@@ -828,6 +823,10 @@ require('lazy').setup {
           },
         },
       }
+
+      -- There are additional nvim-treesitter modules that you can use to interact
+      -- with nvim-treesitter. You should go explore a few and see what interests you:
+      --
       --    - Incremental selection: Included, see `:help nvim-treesitter-incremental-selection-mod`
       --    - Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
       --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
