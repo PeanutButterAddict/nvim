@@ -92,13 +92,14 @@ vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagn
 --
 -- NOTE: This won't work in all terminal emulators/tmux/etc. Try your own mapping
 -- or just use <C-\><C-n> to exit terminal mode
-vim.keymap.set('t', '<C-[>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
+vim.keymap.set('i', 'jj', '<Esc>', { desc = 'Exit terminal mode' })
+vim.keymap.set('t', 'jj', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
 -- TIP: Disable arrow keys in normal mode
 vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
 vim.keymap.set('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
-vim.keymap.set('n', '<up>', '<cmd>echo "Use k to move!!"<CR>')
-vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
+vim.keymap.set('n', '<up>', '<cmd>cprevious<CR>')
+vim.keymap.set('n', '<down>', '<cmd>cnext<CR>')
 
 -- Keybinds to make split navigation easier.
 --  Use CTRL+<hjkl> to switch between windows
@@ -527,6 +528,8 @@ require('lazy').setup {
         'cpptools',
         'csharpier',
         'shfmt',
+        'black',
+        'isort',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
@@ -556,7 +559,7 @@ require('lazy').setup {
       formatters_by_ft = {
         lua = { 'stylua' },
         -- Conform can also run multiple formatters sequentially
-        -- python = { "isort", "black" },
+        python = { 'isort', 'black' },
         --
         -- You can use a sub-list to tell conform to run *until* a formatter
         -- is found.
@@ -734,6 +737,14 @@ require('lazy').setup {
   -- {
   --   'AlexvZyl/nordic.nvim',
   -- },
+  --
+  -- {
+  --   'craftzdog/solarized-osaka.nvim',
+  -- },
+  --
+  -- {
+  --   'maxmx03/solarized.nvim',
+  -- },
 
   { -- You can easily change to a different colorscheme.
     -- Change the name of the colorscheme plugin below, and then
@@ -753,8 +764,8 @@ require('lazy').setup {
     config = function()
       -- Load the colorscheme here
       vim.opt.termguicolors = true
-      vim.cmd.colorscheme 'gruvbox'
       vim.o.background = 'dark'
+      vim.cmd.colorscheme 'gruvbox'
       -- You can configure highlights by doing something like
       -- vim.cmd.hi 'Comment gui=none'
     end,
