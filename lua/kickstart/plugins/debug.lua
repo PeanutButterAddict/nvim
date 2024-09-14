@@ -19,19 +19,16 @@ return {
     'jay-babu/mason-nvim-dap.nvim',
 
     -- Add your own debuggers here
-    'leoluz/nvim-dap-go',
+    -- 'leoluz/nvim-dap-go',
   },
   config = function()
-    local dapvscode = require 'dap.ext.vscode'
-    dapvscode.load_launchjs('.vscode/launch.json', { codelldb = { 'c', 'cpp', 'rs' } })
-
-    local dap = require 'dap'
-    local dapui = require 'dapui'
+    -- local dapvscode = require 'dap.ext.vscode'
+    -- dapvscode.load_launchjs('.vscode/launch.json', { codelldb = { 'c', 'cpp', 'rs' } })
 
     require('mason-nvim-dap').setup {
       -- Makes a best effort to setup the various debuggers with
       -- reasonable debug configurations
-      automatic_setup = true,
+      -- automatic_setup = true,
 
       -- You can provide additional configuration to the handlers,
       -- see mason-nvim-dap README for more information
@@ -42,9 +39,74 @@ return {
       ensure_installed = {
         -- Update this to ensure that you have the debuggers for the langs you want
         -- 'delve',
-        'codelldb',
+        'cpptools',
       },
     }
+
+    local dap = require 'dap'
+    dap.adapters.cppdbg = {
+      id = 'cppdbg',
+      type = 'executable',
+      command = 'C:\\Users\\MiniBubblegum\\AppData\\Local\\nvim-data\\mason\\bin\\OpenDebugAD7.cmd',
+      options = {
+        detached = false,
+      },
+    }
+    dap.configurations.cpp = {
+      {
+        name = 'SweetReactions',
+        type = 'cppdbg',
+        request = 'launch',
+        program = 'C:\\godot\\godot\\bin\\godot.windows.editor.x86_64',
+        args = { '--path', 'C:\\godot\\sweet_reactions\\project' },
+        cwd = '${workspaceFolder}',
+        stopAtEntry = true,
+        setupCommands = {
+          {
+            text = '-enable-pretty-printing',
+            description = 'enable pretty printing',
+            ignoreFailures = false,
+          },
+        },
+      },
+      {
+        name = 'Launch file (pretty printing)',
+        type = 'cppdbg',
+        request = 'launch',
+        program = function()
+          return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+        end,
+        cwd = '${workspaceFolder}',
+        stopAtEntry = true,
+        setupCommands = {
+          {
+            text = '-enable-pretty-printing',
+            description = 'enable pretty printing',
+            ignoreFailures = false,
+          },
+        },
+      },
+      {
+        name = 'Attach to gdbserver :1234 (pretty printing)',
+        type = 'cppdbg',
+        request = 'launch',
+        MIMode = 'gdb',
+        miDebuggerServerAddress = 'localhost:1234',
+        miDebuggerPath = '/usr/bin/gdb',
+        cwd = '${workspaceFolder}',
+        program = function()
+          return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+        end,
+        setupCommands = {
+          {
+            text = '-enable-pretty-printing',
+            description = 'enable pretty printing',
+            ignoreFailures = false,
+          },
+        },
+      },
+    }
+    local dapui = require 'dapui'
 
     -- Basic debugging keymaps, feel free to change to your liking!
     vim.keymap.set('n', '<F5>', dap.continue, { desc = 'Debug: Start/Continue' })

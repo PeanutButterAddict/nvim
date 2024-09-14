@@ -3,54 +3,8 @@
 --
 -- See the kickstart.nvim README for more information
 return {
-  {
-    'folke/trouble.nvim',
-    branch = 'dev', -- IMPORTANT!
-    keys = {
-      {
-        '<leader>xx',
-        '<cmd>Trouble diagnostics toggle<cr>',
-        desc = 'Diagnostics (Trouble)',
-      },
-      {
-        '<leader>xX',
-        '<cmd>Trouble diagnostics toggle filter.buf=0<cr>',
-        desc = 'Buffer Diagnostics (Trouble)',
-      },
-      {
-        '<leader>cs',
-        '<cmd>Trouble symbols toggle focus=false<cr>',
-        desc = 'Symbols (Trouble)',
-      },
-      {
-        '<leader>cl',
-        '<cmd>Trouble lsp toggle focus=false win.position=right<cr>',
-        desc = 'LSP Definitions / references / ... (Trouble)',
-      },
-      {
-        '<leader>xL',
-        '<cmd>Trouble loclist toggle<cr>',
-        desc = 'Location List (Trouble)',
-      },
-      {
-        '<leader>xQ',
-        '<cmd>Trouble qflist toggle<cr>',
-        desc = 'Quickfix List (Trouble)',
-      },
-    },
-    opts = {}, -- for default options, refer to the configuration section for custom setup.
-  },
 
   { 'nvim-neotest/nvim-nio' },
-
-  {
-    'nvim-treesitter/playground',
-    event = 'VeryLazy',
-    cmd = { 'TSPlaygroundToggle' },
-    keys = {
-      { '<leader><leader>t', '<cmd> TSPlaygroundToggle <CR>', desc = 'Toggle TSPlayground' },
-    },
-  },
 
   {
     'mbbill/undotree',
@@ -151,47 +105,87 @@ return {
     },
   },
 
+  {
+    'Badhi/nvim-treesitter-cpp-tools',
+    dependencies = { 'nvim-treesitter/nvim-treesitter' },
+    -- Optional: Configuration
+    opts = function()
+      local options = {
+        preview = {
+          quit = 'q', -- optional keymapping for quit preview
+          accept = '<tab>', -- optional keymapping for accept preview
+        },
+        header_extension = 'h', -- optional
+        source_extension = 'cpp', -- optional
+        custom_define_class_function_commands = { -- optional
+          TSCppImplWrite = {
+            output_handle = require('nt-cpp-tools.output_handlers').get_add_to_cpp(),
+          },
+          --[[
+                <your impl function custom command name> = {
+                    output_handle = function (str, context)
+                        -- string contains the class implementation
+                        -- do whatever you want to do with it
+                    end
+                }
+                ]]
+        },
+      }
+      return options
+    end,
+    -- End configuration
+    config = true,
+  },
+
   -- {
-  --   'rcarriga/nvim-dap-ui',
-  --   event = 'VeryLazy',
-  --   dependencies = 'mfussenegger/nvim-dap',
-  --   config = function()
-  --     local dap = require 'dap'
-  --     local dapui = require 'dapui'
-  --     dapui.setup()
-  --     dap.listeners.after.event_initialized['dapui_config'] = function()
-  --       dapui.open()
-  --     end
-  --     dap.listeners.before.event_terminated['dapui_config'] = function()
-  --       dapui.close()
-  --     end
-  --     dap.listeners.before.event_exited['dapui_config'] = function()
-  --       dapui.close()
-  --     end
-  --   end,
+  --   'folke/trouble.nvim',
+  --   opts = {}, -- for default options, refer to the configuration section for custom setup.
+  --   cmd = 'Trouble',
   --   keys = {
-  --     { '<leader>db', '<cmd> DapToggleBreakpoint <CR>', desc = 'Add breakpoint at line' },
-  --     { '<leader>dr', '<cmd> DapContinue <CR>', desc = 'Start debugger' },
+  --     {
+  --       '<leader>xx',
+  --       '<cmd>Trouble diagnostics toggle<cr>',
+  --       desc = 'Diagnostics (Trouble)',
+  --     },
+  --
+  --     {
+  --       '<leader>xX',
+  --       '<cmd>Trouble diagnostics toggle filter.buf=0<cr>',
+  --       desc = 'Buffer Diagnostics (Trouble)',
+  --     },
+  --
+  --     {
+  --       '<leader>cs',
+  --       '<cmd>Trouble symbols toggle focus=false<cr>',
+  --       desc = 'Symbols (Trouble)',
+  --     },
+  --
+  --     {
+  --       '<leader>cl',
+  --       '<cmd>Trouble lsp toggle focus=false win.position=right<cr>',
+  --       desc = 'LSP Definitions / references / ... (Trouble)',
+  --     },
+  --
+  --     {
+  --       '<leader>xL',
+  --       '<cmd>Trouble loclist toggle<cr>',
+  --       desc = 'Location List (Trouble)',
+  --     },
+  --
+  --     {
+  --       '<leader>xQ',
+  --       '<cmd>Trouble qflist toggle<cr>',
+  --       desc = 'Quickfix List (Trouble)',
+  --     },
   --   },
   -- },
-  --
+
   -- {
-  --   'jay-babu/mason-nvim-dap.nvim',
+  --   'nvim-treesitter/playground',
   --   event = 'VeryLazy',
-  --   dependencies = {
-  --     'williamboman/mason.nvim',
-  --     'mfussenegger/nvim-dap',
+  --   cmd = { 'TSPlaygroundToggle' },
+  --   keys = {
+  --     { '<leader><leader>t', '<cmd> TSPlaygroundToggle <CR>', desc = 'Toggle TSPlayground' },
   --   },
-  --   opts = {
-  --     handlers = {},
-  --   },
-  -- },
-  --
-  -- {
-  --   'mfussenegger/nvim-dap',
-  --   config = function(_, _)
-  --     local dapvscode = require 'dap.ext.vscode'
-  --     dapvscode.load_launchjs('.vscode/launch.json', { codelldb = { 'c', 'cpp' } })
-  --   end,
   -- },
 }
