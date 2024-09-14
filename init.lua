@@ -34,7 +34,7 @@ vim.opt.showmode = false
 -- Sync clipboard between OS and Neovim.
 --  Remove this option if you want your OS clipboard to remain independent.
 --  See `:help 'clipboard'`
-vim.opt.clipboard = 'unnamedplus'
+-- vim.opt.clipboard = 'unnamedplus'
 
 -- Enable break indent
 vim.opt.breakindent = true
@@ -262,6 +262,7 @@ require('lazy').setup {
     branch = '0.1.x',
     dependencies = {
       'nvim-lua/plenary.nvim',
+      'debugloop/telescope-undo.nvim',
       { -- If encountering errors, see telescope-fzf-native README for install instructions
         'nvim-telescope/telescope-fzf-native.nvim',
 
@@ -319,12 +320,16 @@ require('lazy').setup {
           ['ui-select'] = {
             require('telescope.themes').get_dropdown(),
           },
+          undo = {
+            -- telescope-undo.nvim config, see below
+          },
         },
       }
 
       -- Enable telescope extensions, if they are installed
       pcall(require('telescope').load_extension, 'fzf')
       pcall(require('telescope').load_extension, 'ui-select')
+      pcall(require('telescope').load_extension, 'undo')
 
       -- See `:help telescope.builtin`
       local builtin = require 'telescope.builtin'
@@ -362,6 +367,9 @@ require('lazy').setup {
         builtin.find_files { cwd = vim.fn.stdpath 'config' }
       end, { desc = '[S]earch [N]eovim files' })
     end,
+    keys = {
+      { '<leader>u', '<cmd>Telescope undo<CR>', desc = 'Toggle Undotree' },
+    },
   },
 
   { -- LSP Configuration & Plugins
@@ -554,7 +562,7 @@ require('lazy').setup {
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format lua code
-        -- 'prettier',
+        'prettier',
         'clang-format',
         'black',
         'isort',
@@ -816,7 +824,21 @@ require('lazy').setup {
       -- - saiw) - [S]urround [A]dd [I]nner [W]ord [)]Paren
       -- - sd'   - [S]urround [D]elete [']quotes
       -- - sr)'  - [S]urround [R]eplace [)] [']
-      require('mini.surround').setup()
+      require('mini.surround').setup {
+        version = '*',
+        mappings = {
+          add = 'gsa', -- Add surrounding in Normal and Visual modes
+          delete = 'gsd', -- Delete surrounding
+          find = 'gsf', -- Find surrounding (to the right)
+          find_left = 'gsF', -- Find surrounding (to the left)
+          highlight = 'gsh', -- Highlight surrounding
+          replace = 'gsr', -- Replace surrounding
+          update_n_lines = 'gsn', -- Update `n_lines`
+
+          suffix_last = 'l', -- Suffix to search with "prev" method
+          suffix_next = 'n', -- Suffix to search with "next" method
+        },
+      }
 
       -- Simple and easy statusline.
       --  You could remove this setup call if you don't like it,
@@ -835,17 +857,6 @@ require('lazy').setup {
       -- ... and there is more!
       --  Check out: https://github.com/echasnovski/mini.nvim
     end,
-    opts = {
-      mappings = {
-        add = 'gsa',
-        delete = 'gsd',
-        find = 'gsf',
-        find_left = 'gsF',
-        highlight = 'gsh',
-        replace = 'gsr',
-        update_n_lines = 'gsn',
-      },
-    },
   },
 
   { -- Highlight, edit, and navigate code

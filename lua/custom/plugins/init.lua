@@ -7,14 +7,6 @@ return {
   { 'nvim-neotest/nvim-nio' },
 
   {
-    'mbbill/undotree',
-    event = 'VeryLazy',
-    keys = {
-      { '<leader>u', '<cmd>UndotreeToggle<CR>', desc = 'Toggle Undotree' },
-    },
-  },
-
-  {
     'ThePrimeagen/harpoon',
     -- event = 'VeryLazy',
     branch = 'harpoon2',
@@ -135,6 +127,42 @@ return {
     end,
     -- End configuration
     config = true,
+  },
+
+  {
+    'kr40/nvim-macros',
+    cmd = { 'MacroSave', 'MacroYank', 'MacroSelect', 'MacroDelete' },
+    opts = {
+
+      json_file_path = vim.fs.normalize(vim.fn.stdpath 'config' .. '/macros.json'), -- Location where the macros will be stored
+      default_macro_register = 'a', -- Use as default register for :MacroYank and :MacroSave and :MacroSelect Raw functions
+      json_formatter = 'none', -- can be "none" | "jq" | "yq" used to pretty print the json file (jq or yq must be installed!)
+    },
+    keys = {
+      {
+        '<leader>ms',
+        '<cmd>MacroSave<CR>',
+        desc = 'MacroSave',
+      },
+
+      {
+        '<leader>my',
+        '<cmd>MacroYank<CR>',
+        desc = 'MacroYank',
+      },
+
+      {
+        '<leader>mm',
+        '<cmd>MacroSelect<CR>',
+        desc = 'MacroSelect',
+      },
+
+      {
+        '<leader>md',
+        '<cmd>MacroDelete<CR>',
+        desc = 'MacroDelete',
+      },
+    },
   },
 
   -- {
