@@ -26,7 +26,8 @@ vim.opt.foldexpr = 'nvim_treesitter#foldexpr()'
 vim.opt.foldenable = false
 
 -- Enable mouse mode, can be useful for resizing splits for example!
-vim.opt.mouse = ''
+vim.opt.mouse = 'a'
+-- vim.opt.mouse = ''
 
 -- Don't show the mode, since it's already in status line
 vim.opt.showmode = false
@@ -34,7 +35,7 @@ vim.opt.showmode = false
 -- Sync clipboard between OS and Neovim.
 --  Remove this option if you want your OS clipboard to remain independent.
 --  See `:help 'clipboard'`
--- vim.opt.clipboard = 'unnamedplus'
+vim.opt.clipboard = 'unnamedplus'
 
 -- Enable break indent
 vim.opt.breakindent = true
@@ -79,6 +80,7 @@ vim.opt.scrolloff = 10
 vim.opt.hlsearch = true
 vim.opt.incsearch = true
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
+vim.keymap.set('n', '<leader><Del>', '<cmd>!clean_shada<CR>')
 
 -- Diagnostic keymaps
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
@@ -249,6 +251,8 @@ require('lazy').setup {
     },
   },
 
+  -- { 'mrjones2014/tldr.nvim' },
+
   -- NOTE: Plugins can specify dependencies.
   --
   -- The dependencies are proper plugin specifications as well - anything
@@ -368,7 +372,7 @@ require('lazy').setup {
       end, { desc = '[S]earch [N]eovim files' })
     end,
     keys = {
-      { '<leader>u', '<cmd>Telescope undo<CR>', desc = 'Toggle Undotree' },
+      { '<leader>su', '<cmd>Telescope undo<CR>', desc = '[S]earch Undotree' },
     },
   },
 
@@ -562,7 +566,8 @@ require('lazy').setup {
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format lua code
-        'prettier',
+        -- 'prettier',
+        'jq',
         'clang-format',
         'black',
         'isort',
@@ -603,7 +608,8 @@ require('lazy').setup {
         c = { 'clang-format' },
         cpp = { 'clang-format' },
         -- cs = { 'csharpier' },
-        -- json = { 'prettier' },
+        json = { 'jq' },
+        -- json = { 'jq', 'prettier' },
         -- rust = { 'prettier' },
       },
     },

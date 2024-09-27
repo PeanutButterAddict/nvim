@@ -53,12 +53,22 @@ return {
       },
     }
     dap.configurations.cpp = {
+
       {
-        name = 'SweetReactions',
+        name = 'SweetReactions with engine remote debug',
         type = 'cppdbg',
         request = 'launch',
         program = 'C:\\godot\\godot\\bin\\godot.windows.editor.x86_64',
-        args = { '--path', 'C:\\godot\\sweet_reactions\\project' },
+        args = {
+          '--path',
+          'C:\\godot\\sweet_reactions\\project',
+          '-v',
+          '--remote-debug',
+          'tcp://127.0.0.1:6007',
+          '--log-file',
+          'C:\\godot\\sweet_reactions\\logs\\gdb_engine_remote_log.txt',
+          '--debug-collisions',
+        },
         cwd = '${workspaceFolder}',
         stopAtEntry = true,
         setupCommands = {
@@ -69,6 +79,80 @@ return {
           },
         },
       },
+
+      {
+        name = 'SweetReactions remote debug',
+        type = 'cppdbg',
+        request = 'launch',
+        program = 'C:\\ProgramData\\chocolatey\\lib\\godot\\tools\\godot_v4.3-stable_win64.exe',
+        args = {
+          '--path',
+          'C:\\godot\\sweet_reactions\\project',
+          '--remote-debug',
+          'tcp://127.0.0.1:6007',
+          '--log-file',
+          'C:\\godot\\sweet_reactions\\logs\\gdb_remote_log.txt',
+          '--debug-collisions',
+        },
+        cwd = '${workspaceFolder}',
+        stopAtEntry = true,
+        setupCommands = {
+          {
+            text = '-enable-pretty-printing',
+            description = 'enable pretty printing',
+            ignoreFailures = false,
+          },
+        },
+      },
+
+      {
+        name = 'SweetReactions with engine',
+        type = 'cppdbg',
+        request = 'launch',
+        program = 'C:\\godot\\godot\\bin\\godot.windows.editor.x86_64',
+        args = {
+          '--path',
+          'C:\\godot\\sweet_reactions\\project',
+          '-v',
+          '--log-file',
+          'C:\\godot\\sweet_reactions\\logs\\gdb_engine_log.txt',
+          '--debug-collisions',
+        },
+        cwd = '${workspaceFolder}',
+        stopAtEntry = true,
+        setupCommands = {
+          {
+            text = '-enable-pretty-printing',
+            description = 'enable pretty printing',
+            ignoreFailures = false,
+          },
+        },
+      },
+
+      {
+
+        name = 'SweetReactions',
+        type = 'cppdbg',
+        request = 'launch',
+        program = 'C:\\ProgramData\\chocolatey\\lib\\godot\\tools\\godot_v4.3-stable_win64.exe',
+        args = {
+          '--path',
+          'C:\\godot\\sweet_reactions\\project',
+          '--log-file',
+          'C:\\godot\\sweet_reactions\\logs\\gdb_log.txt',
+          '--debug-collisions',
+        },
+        cwd = '${workspaceFolder}',
+        stopAtEntry = true,
+        setupCommands = {
+          {
+            text = '-enable-pretty-printing',
+            description = 'enable pretty printing',
+            ignoreFailures = false,
+          },
+        },
+      },
+
       {
         name = 'Launch file (pretty printing)',
         type = 'cppdbg',
@@ -86,6 +170,7 @@ return {
           },
         },
       },
+
       {
         name = 'Attach to gdbserver :1234 (pretty printing)',
         type = 'cppdbg',
@@ -109,10 +194,12 @@ return {
     local dapui = require 'dapui'
 
     -- Basic debugging keymaps, feel free to change to your liking!
-    vim.keymap.set('n', '<F5>', dap.continue, { desc = 'Debug: Start/Continue' })
-    vim.keymap.set('n', '<F1>', dap.step_into, { desc = 'Debug: Step Into' })
-    vim.keymap.set('n', '<F2>', dap.step_over, { desc = 'Debug: Step Over' })
+    vim.keymap.set('n', '<F1>', dap.step_over, { desc = 'Debug: Step Over' })
+    vim.keymap.set('n', '<F2>', dap.step_into, { desc = 'Debug: Step Into' })
     vim.keymap.set('n', '<F3>', dap.step_out, { desc = 'Debug: Step Out' })
+    vim.keymap.set('n', '<F5>', dap.continue, { desc = 'Debug: Start/Continue' })
+    vim.keymap.set('n', '<F9>', dap.disconnect, { desc = 'Debug: Disconnect' })
+
     vim.keymap.set('n', '<leader>b', dap.toggle_breakpoint, { desc = 'Debug: Toggle Breakpoint' })
     vim.keymap.set('n', '<leader>B', function()
       dap.set_breakpoint(vim.fn.input 'Breakpoint condition: ')
@@ -127,15 +214,15 @@ return {
       icons = { expanded = '▾', collapsed = '▸', current_frame = '*' },
       controls = {
         icons = {
-          pause = '⏸',
-          play = '▶',
-          step_into = '⏎',
-          step_over = '⏭',
-          step_out = '⏮',
-          step_back = 'b',
-          run_last = '▶▶',
-          terminate = '⏹',
-          disconnect = '⏏',
+          -- pause = '⏸',
+          -- play = '▶',
+          -- step_into = '⏎',
+          -- step_over = '⏭',
+          -- step_out = '⏮',
+          -- step_back = 'b',
+          -- run_last = '▶▶',
+          -- terminate = '⏹',
+          -- disconnect = '⏏',
         },
       },
     }
@@ -146,6 +233,18 @@ return {
     dap.listeners.after.event_initialized['dapui_config'] = dapui.open
     dap.listeners.before.event_terminated['dapui_config'] = dapui.close
     dap.listeners.before.event_exited['dapui_config'] = dapui.close
+
+    local widgets = require 'dap.ui.widgets'
+
+    vim.keymap.set({ 'n', 'v' }, '<Leader>dh', widgets.hover, { desc = 'Debug: Widget hover' })
+    vim.keymap.set({ 'n', 'v' }, '<Leader>dp', widgets.preview, { desc = 'Debug: Widget preview' })
+
+    -- vim.keymap.set('n', '<Leader>df', function()
+    --   widgets.centered_float(widgets.frames)
+    -- end, { desc = 'Debug: Widget centered_float frames' })
+    -- vim.keymap.set('n', '<Leader>ds', function()
+    --   widgets.centered_float(widgets.scopes)
+    -- end, { desc = 'Debug: Widget centered_float scopes' })
 
     -- Install golang specific config
     -- require('dap-go').setup()

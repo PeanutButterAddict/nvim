@@ -1,1 +1,14 @@
-{"macros": [{"name": "Replace double quotations with angle brackets", "raw": "XmYicjxmInI+", "content": "^f\"r<lt>f\"r>"}, {"name": "Replace angle brackets with double quotations", "raw": "XmY8ciJmPnIi", "content": "^f<lt>r\"f>r\""}]}
+{
+  "macros": [
+    {
+      "name": "Replace double quotations with angle brackets",
+      "raw": "XmYicjxmInI+",
+      "content": "^f\"r<f\"r>j"
+    },
+    {
+      "name": "Replace angle brackets with double quotations",
+      "raw": "XmY8ciJmPnIi",
+      "content": "^f<r\"f>r\"j"
+    }
+  ]
+}
