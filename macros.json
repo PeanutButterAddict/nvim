@@ -1,14 +1,1 @@
-{
-  "macros": [
-    {
-      "name": "Replace double quotations with angle brackets",
-      "raw": "XmYicjxmInI+",
-      "content": "^f\"r<f\"r>j"
-    },
-    {
-      "name": "Replace angle brackets with double quotations",
-      "raw": "XmY8ciJmPnIi",
-      "content": "^f<r\"f>r\"j"
-    }
-  ]
-}
+{"macros": [{"name": "Replace double quotations with angle brackets", "raw": "XmYicjxmInI+", "content": "^f\"r<f\"r>j"}, {"name": "Replace angle brackets with double quotations", "raw": "XmY8ciJmPnIi", "content": "^f<r\"f>r\"j"}, {"name": "Crash Condition", "raw": "XmNlQ1JBU0hfQ09ORGpqago=", "content": "^ceCRASH_CONDjjj<NL>"}, {"name": "Crash Condition Message", "raw": "XmNlQ1JBU0hfQ09ORF9NU0dqamoK", "content": "^ceCRASH_COND_MSGjjj<NL>"}, {"name": "Include error macros", "raw": "byNpbmNsdWRlIDxnb2RvdF9jcHAvY29yZS9lcnJvcl9tYWNyb3MuaHBwPmpqCg==", "content": "o#include<Space><lt>godot_cpp/core/error_macros.hpp>jj<NL>"}, {"name": "Add excalamtion to Crash Conditon", "raw": "XmYogP01YSFqamo=", "content": "^f(<Ignore>a!jjj"}, {"name": "Add is_null to Crash Condition", "raw": "XmYpgP01aS5pc19udWxsKClqamo=", "content": "^f)<Ignore>i.is_null()jjj"}]}

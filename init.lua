@@ -510,7 +510,10 @@ require('lazy').setup {
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
 
       local servers = {
-        clangd = {},
+        clangd = {
+          cmd = { 'clangd', '--query-driver=C:\\ProgramData\\mingw64\\mingw64\\bin\\g++.exe' },
+        },
+        cmake = {},
         -- gopls = {},
         -- pyright = {},
         -- rust_analyzer = {},
@@ -571,6 +574,7 @@ require('lazy').setup {
         'clang-format',
         'black',
         'isort',
+        'cmakelang',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
@@ -607,6 +611,7 @@ require('lazy').setup {
         -- javascript = { { "prettierd", "prettier" } },lua = { "stylua" },
         c = { 'clang-format' },
         cpp = { 'clang-format' },
+        cmake = { 'cmakelang' },
         -- cs = { 'csharpier' },
         json = { 'jq' },
         -- json = { 'jq', 'prettier' },

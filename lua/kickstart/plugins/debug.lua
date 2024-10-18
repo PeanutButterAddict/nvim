@@ -65,8 +65,6 @@ return {
           '-v',
           '--remote-debug',
           'tcp://127.0.0.1:6007',
-          '--log-file',
-          'C:\\godot\\sweet_reactions\\logs\\gdb_engine_remote_log.txt',
           '--debug-collisions',
         },
         cwd = '${workspaceFolder}',
@@ -91,8 +89,6 @@ return {
           '--remote-debug',
           'tcp://127.0.0.1:6007',
           '--log-file',
-          'C:\\godot\\sweet_reactions\\logs\\gdb_remote_log.txt',
-          '--debug-collisions',
         },
         cwd = '${workspaceFolder}',
         stopAtEntry = true,
@@ -198,7 +194,7 @@ return {
     vim.keymap.set('n', '<F2>', dap.step_into, { desc = 'Debug: Step Into' })
     vim.keymap.set('n', '<F3>', dap.step_out, { desc = 'Debug: Step Out' })
     vim.keymap.set('n', '<F5>', dap.continue, { desc = 'Debug: Start/Continue' })
-    vim.keymap.set('n', '<F9>', dap.disconnect, { desc = 'Debug: Disconnect' })
+    vim.keymap.set('n', '<F8>', dap.disconnect, { desc = 'Debug: Disconnect' })
 
     vim.keymap.set('n', '<leader>b', dap.toggle_breakpoint, { desc = 'Debug: Toggle Breakpoint' })
     vim.keymap.set('n', '<leader>B', function()
