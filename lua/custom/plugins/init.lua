@@ -127,6 +127,14 @@ return {
     end,
     -- End configuration
     config = true,
+    -- keys = {
+    --   {
+    --     '<leader>cf',
+    --     [[<cmd>TSCppDefineClassFunc<CR>]],
+    --     desc = 'make cpp class func',
+    --     mode = { 'v' },
+    --   },
+    -- },
   },
 
   {

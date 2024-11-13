@@ -80,7 +80,6 @@ vim.opt.scrolloff = 10
 vim.opt.hlsearch = true
 vim.opt.incsearch = true
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
-vim.keymap.set('n', '<leader><Del>', '<cmd>!clean_shada<CR>')
 
 -- Diagnostic keymaps
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
@@ -119,6 +118,21 @@ vim.keymap.set('n', '<BS>', 'O<ESC>', { desc = 'Add a line above' })
 vim.keymap.set('n', 'Y', 'yg$', { desc = 'Append with cursor fixed' })
 vim.keymap.set('v', 'J', ":m '>+1<CR>gv=gv", { desc = 'Move Marked content down once' })
 vim.keymap.set('v', 'K', ":m '<-2<CR>gv=gv", { desc = 'Move Marked content up once' })
+vim.keymap.set('n', '<leader><Del>', '<cmd>!clean_shada<CR>')
+vim.keymap.set('n', '<F9>1', '<cmd>!run_debug<CR>', { desc = 'Run debug' })
+vim.keymap.set('n', '<F9>2', '<cmd>!run_debug_remote<CR>', { desc = 'Run debug remote' })
+vim.keymap.set('n', '<F9>3', '<cmd>!run_release<CR>', { desc = 'Run release' })
+vim.keymap.set('n', '<F9>4', '<cmd>!run_release_remote<CR>', { desc = 'Run release remote' })
+vim.keymap.set('n', '<F10>1', '<cmd>!build_debug<CR>', { desc = 'Build debug' })
+vim.keymap.set('n', '<F10>2', '<cmd>!build_release<CR>', { desc = 'Build release' })
+
+vim.filetype.add {
+  extension = {
+    c3 = 'c3',
+    c3i = 'c3',
+    c3t = 'c3',
+  },
+}
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
@@ -388,6 +402,7 @@ require('lazy').setup {
       -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
       { 'j-hui/fidget.nvim', opts = {} },
     },
+
     config = function()
       -- Brief Aside: **What is LSP?**
       --
@@ -499,6 +514,9 @@ require('lazy').setup {
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
 
+      -- NOTE: For C3
+      require('lspconfig').c3_lsp.setup {}
+
       -- Enable the following language servers
       --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
       --
@@ -514,11 +532,11 @@ require('lazy').setup {
           cmd = { 'clangd', '--query-driver=C:\\ProgramData\\mingw64\\mingw64\\bin\\g++.exe' },
         },
         cmake = {},
+        -- zls = {},
         -- gopls = {},
         -- pyright = {},
         -- rust_analyzer = {},
         -- csharp_ls = {},
-        -- zls = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
         -- Some languages (like typescript) have entire language plugins that can be useful:
@@ -526,8 +544,6 @@ require('lazy').setup {
         --
         -- But for many setups, the LSP (`tsserver`) will work just fine
         -- tsserver = {},
-        --
-
         lua_ls = {
           -- cmd = {...},
           -- filetypes { ...},
@@ -555,7 +571,6 @@ require('lazy').setup {
           },
         },
       }
-
       -- Ensure the servers and tools above are installed
       --  To check the current status of installed tools and/or manually install
       --  other tools, you can run
@@ -577,7 +592,6 @@ require('lazy').setup {
         'cmakelang',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
-
       require('mason-lspconfig').setup {
         handlers = {
           function(server_name)
@@ -605,13 +619,14 @@ require('lazy').setup {
         lua = { 'stylua' },
         -- Conform can also run multiple formatters sequentially
         python = { 'isort', 'black' },
-        --
         -- You can use a sub-list to tell conform to run *until* a formatter
         -- is found.
         -- javascript = { { "prettierd", "prettier" } },lua = { "stylua" },
         c = { 'clang-format' },
         cpp = { 'clang-format' },
+        c3 = { 'clang-format' },
         cmake = { 'cmakelang' },
+        zig = { 'zigfmt' },
         -- cs = { 'csharpier' },
         json = { 'jq' },
         -- json = { 'jq', 'prettier' },
@@ -876,9 +891,9 @@ require('lazy').setup {
     config = function()
       -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
 
-      ---@diagnostic disable-next-line: missing-fields
+      -- @diagnostic disable-next-line: missing-fields
       require('nvim-treesitter.configs').setup {
-        ensure_installed = { 'bash', 'c', 'html', 'lua', 'markdown', 'vim', 'vimdoc', 'cpp', 'rust', 'python', 'c_sharp' },
+        ensure_installed = { 'bash', 'c', 'c3', 'html', 'lua', 'markdown', 'vim', 'vimdoc', 'cpp', 'rust', 'python', 'c_sharp' },
         -- Autoinstall languages that are not installed
         auto_install = true,
         highlight = { enable = true },
@@ -891,6 +906,16 @@ require('lazy').setup {
             scope_incremental = 'grc',
             node_decremental = 'grm',
           },
+        },
+      }
+
+      -- For c3
+      local parser_config = require('nvim-treesitter.parsers').get_parser_configs()
+      parser_config.c3 = {
+        install_info = {
+          url = 'https://github.com/c3lang/tree-sitter-c3',
+          files = { 'src/parser.c', 'src/scanner.c' },
+          branch = 'main',
         },
       }
 

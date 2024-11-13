@@ -55,17 +55,37 @@ return {
     dap.configurations.cpp = {
 
       {
-        name = 'SweetReactions with engine remote debug',
+        name = 'KnightBall',
         type = 'cppdbg',
         request = 'launch',
-        program = 'C:\\godot\\godot\\bin\\godot.windows.editor.x86_64',
+        program = 'C:\\gd\\godot\\bin\\godot.windows.template_debug.x86_64.exe',
         args = {
           '--path',
-          'C:\\godot\\sweet_reactions\\project',
-          '-v',
+          'C:\\gd\\knight_ball\\project',
+          -- '--debug-collisions',
+        },
+        cwd = '${workspaceFolder}',
+        stopAtEntry = true,
+        setupCommands = {
+          {
+            text = '-enable-pretty-printing',
+            description = 'enable pretty printing',
+            ignoreFailures = false,
+          },
+        },
+      },
+
+      {
+        name = 'KnightBall with engine remote debug',
+        type = 'cppdbg',
+        request = 'launch',
+        program = 'C:\\gd\\godot\\bin\\godot.windows.template_debug.x86_64.exe',
+        args = {
+          '--path',
+          'C:\\gd\\knight_ball\\project',
           '--remote-debug',
           'tcp://127.0.0.1:6007',
-          '--debug-collisions',
+          -- '--debug-collisions',
         },
         cwd = '${workspaceFolder}',
         stopAtEntry = true,
@@ -78,76 +98,100 @@ return {
         },
       },
 
-      {
-        name = 'SweetReactions remote debug',
-        type = 'cppdbg',
-        request = 'launch',
-        program = 'C:\\ProgramData\\chocolatey\\lib\\godot\\tools\\godot_v4.3-stable_win64.exe',
-        args = {
-          '--path',
-          'C:\\godot\\sweet_reactions\\project',
-          '--remote-debug',
-          'tcp://127.0.0.1:6007',
-          '--log-file',
-        },
-        cwd = '${workspaceFolder}',
-        stopAtEntry = true,
-        setupCommands = {
-          {
-            text = '-enable-pretty-printing',
-            description = 'enable pretty printing',
-            ignoreFailures = false,
-          },
-        },
-      },
-
-      {
-        name = 'SweetReactions with engine',
-        type = 'cppdbg',
-        request = 'launch',
-        program = 'C:\\godot\\godot\\bin\\godot.windows.editor.x86_64',
-        args = {
-          '--path',
-          'C:\\godot\\sweet_reactions\\project',
-          '-v',
-          '--log-file',
-          'C:\\godot\\sweet_reactions\\logs\\gdb_engine_log.txt',
-          '--debug-collisions',
-        },
-        cwd = '${workspaceFolder}',
-        stopAtEntry = true,
-        setupCommands = {
-          {
-            text = '-enable-pretty-printing',
-            description = 'enable pretty printing',
-            ignoreFailures = false,
-          },
-        },
-      },
-
-      {
-
-        name = 'SweetReactions',
-        type = 'cppdbg',
-        request = 'launch',
-        program = 'C:\\ProgramData\\chocolatey\\lib\\godot\\tools\\godot_v4.3-stable_win64.exe',
-        args = {
-          '--path',
-          'C:\\godot\\sweet_reactions\\project',
-          '--log-file',
-          'C:\\godot\\sweet_reactions\\logs\\gdb_log.txt',
-          '--debug-collisions',
-        },
-        cwd = '${workspaceFolder}',
-        stopAtEntry = true,
-        setupCommands = {
-          {
-            text = '-enable-pretty-printing',
-            description = 'enable pretty printing',
-            ignoreFailures = false,
-          },
-        },
-      },
+      -- {
+      --   name = 'SweetReactions with engine remote debug',
+      --   type = 'cppdbg',
+      --   request = 'launch',
+      --   program = 'C:\\godot\\godot\\bin\\godot.windows.editor.x86_64',
+      --   args = {
+      --     '--path',
+      --     'C:\\godot\\sweet_reactions\\project',
+      --     '-v',
+      --     '--remote-debug',
+      --     'tcp://127.0.0.1:6007',
+      --     '--debug-collisions',
+      --   },
+      --   cwd = '${workspaceFolder}',
+      --   stopAtEntry = true,
+      --   setupCommands = {
+      --     {
+      --       text = '-enable-pretty-printing',
+      --       description = 'enable pretty printing',
+      --       ignoreFailures = false,
+      --     },
+      --   },
+      -- },
+      --
+      -- {
+      --   name = 'SweetReactions remote debug',
+      --   type = 'cppdbg',
+      --   request = 'launch',
+      --   program = 'C:\\ProgramData\\chocolatey\\lib\\godot\\tools\\godot_v4.3-stable_win64.exe',
+      --   args = {
+      --     '--path',
+      --     'C:\\godot\\sweet_reactions\\project',
+      --     '--remote-debug',
+      --     'tcp://127.0.0.1:6007',
+      --     '--log-file',
+      --   },
+      --   cwd = '${workspaceFolder}',
+      --   stopAtEntry = true,
+      --   setupCommands = {
+      --     {
+      --       text = '-enable-pretty-printing',
+      --       description = 'enable pretty printing',
+      --       ignoreFailures = false,
+      --     },
+      --   },
+      -- },
+      --
+      -- {
+      --   name = 'SweetReactions with engine',
+      --   type = 'cppdbg',
+      --   request = 'launch',
+      --   program = 'C:\\godot\\godot\\bin\\godot.windows.editor.x86_64',
+      --   args = {
+      --     '--path',
+      --     'C:\\godot\\sweet_reactions\\project',
+      --     '-v',
+      --     '--log-file',
+      --     'C:\\godot\\sweet_reactions\\logs\\gdb_engine_log.txt',
+      --     '--debug-collisions',
+      --   },
+      --   cwd = '${workspaceFolder}',
+      --   stopAtEntry = true,
+      --   setupCommands = {
+      --     {
+      --       text = '-enable-pretty-printing',
+      --       description = 'enable pretty printing',
+      --       ignoreFailures = false,
+      --     },
+      --   },
+      -- },
+      --
+      -- {
+      --
+      --   name = 'SweetReactions',
+      --   type = 'cppdbg',
+      --   request = 'launch',
+      --   program = 'C:\\ProgramData\\chocolatey\\lib\\godot\\tools\\godot_v4.3-stable_win64.exe',
+      --   args = {
+      --     '--path',
+      --     'C:\\godot\\sweet_reactions\\project',
+      --     '--log-file',
+      --     'C:\\godot\\sweet_reactions\\logs\\gdb_log.txt',
+      --     '--debug-collisions',
+      --   },
+      --   cwd = '${workspaceFolder}',
+      --   stopAtEntry = true,
+      --   setupCommands = {
+      --     {
+      --       text = '-enable-pretty-printing',
+      --       description = 'enable pretty printing',
+      --       ignoreFailures = false,
+      --     },
+      --   },
+      -- },
 
       {
         name = 'Launch file (pretty printing)',
