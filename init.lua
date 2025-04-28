@@ -124,7 +124,15 @@ vim.keymap.set('n', '<F9>2', '<cmd>!run_debug_remote<CR>', { desc = 'Run debug r
 vim.keymap.set('n', '<F9>3', '<cmd>!run_release<CR>', { desc = 'Run release' })
 vim.keymap.set('n', '<F9>4', '<cmd>!run_release_remote<CR>', { desc = 'Run release remote' })
 vim.keymap.set('n', '<F10>1', '<cmd>!build_debug<CR>', { desc = 'Build debug' })
-vim.keymap.set('n', '<F10>2', '<cmd>!build_release<CR>', { desc = 'Build release' })
+vim.keymap.set('n', '<F10>2', '<cmd>!build_all_debug<CR>', { desc = 'Build all debug' })
+vim.keymap.set('n', '<F10>3', '<cmd>!build_release<CR>', { desc = 'Build release' })
+vim.keymap.set('n', '<F12>2', '<cmd>!debug_log<CR>', { desc = 'Notepad open debug log file' })
+vim.keymap.set(
+  'n',
+  '<F12>1',
+  '<cmd>vsp C:/Users/MiniBubblegum/AppData/Roaming/Godot/app_userdata/KnightBall/logs/godot.log"<CR>',
+  { desc = 'Nvim split open debug log file' }
+)
 
 vim.filetype.add {
   extension = {
@@ -532,6 +540,7 @@ require('lazy').setup {
           cmd = { 'clangd', '--query-driver=C:\\ProgramData\\mingw64\\mingw64\\bin\\g++.exe' },
         },
         cmake = {},
+        lemminx = {},
         -- zls = {},
         -- gopls = {},
         -- pyright = {},
@@ -583,6 +592,7 @@ require('lazy').setup {
       -- for you, so that they are available from within Neovim.
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
+        'gdtoolkit',
         'stylua', -- Used to format lua code
         -- 'prettier',
         'jq',
@@ -624,12 +634,14 @@ require('lazy').setup {
         -- javascript = { { "prettierd", "prettier" } },lua = { "stylua" },
         c = { 'clang-format' },
         cpp = { 'clang-format' },
-        c3 = { 'clang-format' },
+        -- c3 = { 'clang-format' },
         cmake = { 'cmakelang' },
         zig = { 'zigfmt' },
+        xml = { 'xmlformatter' },
         -- cs = { 'csharpier' },
-        json = { 'jq' },
-        -- json = { 'jq', 'prettier' },
+        -- json = { 'jq' },
+        json = { 'jq', 'prettier' },
+        gdscript = { 'gdtoolkit' },
         -- rust = { 'prettier' },
       },
     },
