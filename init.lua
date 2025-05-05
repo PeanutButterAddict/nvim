@@ -113,34 +113,34 @@ vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper win
 
 -- Personal Additions
 
-vim.keymap.set('n', '<Enter>', 'o<ESC>', { desc = 'Add a line below' })
-vim.keymap.set('n', '<BS>', 'O<ESC>', { desc = 'Add a line above' })
+-- vim.keymap.set('n', '<Enter>', 'o<ESC>', { desc = 'Add a line below' })
+-- vim.keymap.set('n', '<BS>', 'O<ESC>', { desc = 'Add a line above' })
 vim.keymap.set('n', 'Y', 'yg$', { desc = 'Append with cursor fixed' })
 vim.keymap.set('v', 'J', ":m '>+1<CR>gv=gv", { desc = 'Move Marked content down once' })
 vim.keymap.set('v', 'K', ":m '<-2<CR>gv=gv", { desc = 'Move Marked content up once' })
-vim.keymap.set('n', '<leader><Del>', '<cmd>!clean_shada<CR>')
-vim.keymap.set('n', '<F9>1', '<cmd>!run_debug<CR>', { desc = 'Run debug' })
-vim.keymap.set('n', '<F9>2', '<cmd>!run_debug_remote<CR>', { desc = 'Run debug remote' })
-vim.keymap.set('n', '<F9>3', '<cmd>!run_release<CR>', { desc = 'Run release' })
-vim.keymap.set('n', '<F9>4', '<cmd>!run_release_remote<CR>', { desc = 'Run release remote' })
-vim.keymap.set('n', '<F10>1', '<cmd>!build_debug<CR>', { desc = 'Build debug' })
-vim.keymap.set('n', '<F10>2', '<cmd>!build_all_debug<CR>', { desc = 'Build all debug' })
-vim.keymap.set('n', '<F10>3', '<cmd>!build_release<CR>', { desc = 'Build release' })
-vim.keymap.set('n', '<F12>2', '<cmd>!debug_log<CR>', { desc = 'Notepad open debug log file' })
-vim.keymap.set(
-  'n',
-  '<F12>1',
-  '<cmd>vsp C:/Users/MiniBubblegum/AppData/Roaming/Godot/app_userdata/KnightBall/logs/godot.log"<CR>',
-  { desc = 'Nvim split open debug log file' }
-)
+-- vim.keymap.set('n', '<leader><Del>', '<cmd>!clean_shada.sh<CR>')
+vim.keymap.set('n', '<F9>1', '<cmd>!sh run_debug.sh<CR>', { desc = 'Run debug' })
+vim.keymap.set('n', '<F9>2', '<cmd>!run_debug_remote.sh<CR>', { desc = 'Run debug remote' })
+vim.keymap.set('n', '<F9>3', '<cmd>!run_release.sh<CR>', { desc = 'Run release' })
+vim.keymap.set('n', '<F9>4', '<cmd>!run_release_remot.she<CR>', { desc = 'Run release remote' })
+vim.keymap.set('n', '<F10>1', '<cmd>!sh build_debug.sh<CR>', { desc = 'Build debug' })
+vim.keymap.set('n', '<F10>2', '<cmd>!build_all_debug.sh<CR>', { desc = 'Build all debug' })
+vim.keymap.set('n', '<F10>3', '<cmd>!build_release.sh<CR>', { desc = 'Build release' })
+vim.keymap.set('n', '<F12>2', '<cmd>!debug_log.sh<CR>', { desc = 'Notepad open debug log file' })
+-- vim.keymap.set(
+--   'n',
+--   '<F12>1',
+--   '<cmd>vsp C:/Users/MiniBubblegum/AppData/Roaming/Godot/app_userdata/KnightBall/logs/godot.log"<CR>',
+--   { desc = 'Nvim split open debug log file' }
+-- )
 
-vim.filetype.add {
-  extension = {
-    c3 = 'c3',
-    c3i = 'c3',
-    c3t = 'c3',
-  },
-}
+-- vim.filetype.add {
+--   extension = {
+--     c3 = 'c3',
+--     c3i = 'c3',
+--     c3t = 'c3',
+--   },
+-- }
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
@@ -522,8 +522,8 @@ require('lazy').setup {
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
 
-      -- NOTE: For C3
-      require('lspconfig').c3_lsp.setup {}
+      -- -- NOTE: For C3
+      -- require('lspconfig').c3_lsp.setup {}
 
       -- Enable the following language servers
       --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
@@ -537,10 +537,11 @@ require('lazy').setup {
 
       local servers = {
         clangd = {
-          cmd = { 'clangd', '--query-driver=C:\\ProgramData\\mingw64\\mingw64\\bin\\g++.exe' },
+          -- cmd = { 'clangd', '--query-driver=C:\\ProgramData\\mingw64\\mingw64\\bin\\g++.exe' },
+          cmd = { 'clangd' },
         },
         cmake = {},
-        lemminx = {},
+        -- lemminx = {},
         -- zls = {},
         -- gopls = {},
         -- pyright = {},
@@ -593,13 +594,14 @@ require('lazy').setup {
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
         'gdtoolkit',
-        'stylua', -- Used to format lua code
+        -- 'stylua', -- Used to format lua code
         -- 'prettier',
         'jq',
         'clang-format',
         'black',
         'isort',
         'cmakelang',
+        'xmlformatter',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
       require('mason-lspconfig').setup {
@@ -634,7 +636,6 @@ require('lazy').setup {
         -- javascript = { { "prettierd", "prettier" } },lua = { "stylua" },
         c = { 'clang-format' },
         cpp = { 'clang-format' },
-        -- c3 = { 'clang-format' },
         cmake = { 'cmakelang' },
         zig = { 'zigfmt' },
         xml = { 'xmlformatter' },
@@ -905,7 +906,7 @@ require('lazy').setup {
 
       -- @diagnostic disable-next-line: missing-fields
       require('nvim-treesitter.configs').setup {
-        ensure_installed = { 'bash', 'c', 'c3', 'html', 'lua', 'markdown', 'vim', 'vimdoc', 'cpp', 'rust', 'python', 'c_sharp' },
+        ensure_installed = { 'bash', 'c', 'html', 'lua', 'markdown', 'vim', 'vimdoc', 'cpp', 'rust', 'python', 'c_sharp' },
         -- Autoinstall languages that are not installed
         auto_install = true,
         highlight = { enable = true },
@@ -922,14 +923,14 @@ require('lazy').setup {
       }
 
       -- For c3
-      local parser_config = require('nvim-treesitter.parsers').get_parser_configs()
-      parser_config.c3 = {
-        install_info = {
-          url = 'https://github.com/c3lang/tree-sitter-c3',
-          files = { 'src/parser.c', 'src/scanner.c' },
-          branch = 'main',
-        },
-      }
+      -- local parser_config = require('nvim-treesitter.parsers').get_parser_configs()
+      -- parser_config.c3 = {
+      --   install_info = {
+      --     url = 'https://github.com/c3lang/tree-sitter-c3',
+      --     files = { 'src/parser.c', 'src/scanner.c' },
+      --     branch = 'main',
+      --   },
+      -- }
 
       -- There are additional nvim-treesitter modules that you can use to interact
       -- with nvim-treesitter. You should go explore a few and see what interests you:
